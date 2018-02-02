@@ -1,0 +1,816 @@
+<html>
+<head>
+<title>BigPad Html Export</title>
+</head>
+<body>
+<font face="Courier New">
+<font color="#0000FF">#include</font>&nbsp;&ltiostream.h&gt<br>
+<font color="#0000FF">#include</font>&nbsp;&ltstdio.h&gt<br>
+<font color="#0000FF">#include</font>&nbsp;&ltconio.h&gt<br>
+<font color="#0000FF">#include</font>&nbsp;&ltgraphics.h&gt<br>
+<font color="#0000FF">#include</font>&nbsp;&ltstdlib.h&gt<br>
+<font color="#0000FF">#include</font>&nbsp;&ltdos.h&gt<br>
+<br>
+<font color="#0000FF">int</font>&nbsp;feld[9][9];<br>
+<font color="#0000FF">int</font>&nbsp;moeglichkeiten[9][9][9];<br>
+<font color="#0000FF">int</font>&nbsp;moeglichkeiten1[9][9][9];<br>
+<br>
+<font color="#0000FF">class</font>&nbsp;sudoku<br>
+{&nbsp;&nbsp;&nbsp;<font color="#0000FF">private</font>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">public</font>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sudoku(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;grafikmodus(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;grafik(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;grafikausgabe(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;eingabeauswahl(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;eingabeauswahlgrafik(int,int,int);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;eingabe(int,int);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;spaltensucher(int,int);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;reihensucher(int,int);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;dreixdreisucher(int,int,int);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;sucher(int,int,int);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;moeglichkeitennullsetzer(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;gesamtmoeglichkeiten(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;single(<font color="#0000FF">int</font>&nbsp;&amp;reihe,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;spalte,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;ziffer);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;hiddensinglespalte(<font color="#0000FF">int</font>&nbsp;&amp;reihe,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;spalte,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;ziffer);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;hiddensinglereihe(<font color="#0000FF">int</font>&nbsp;&amp;reihe,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;spalte,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;ziffer);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;hiddensinglefeld(<font color="#0000FF">int</font>&nbsp;&amp;reihe,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;spalte,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;ziffer);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;hiddensingle(<font color="#0000FF">int</font>&nbsp;&amp;reihe,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;spalte,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;ziffer);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;moeglichkeitenanzahl(int,int);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;moeglichkeitenvergleich(int,int,int,int);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;nakedpairsreihe(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;nakedpairsreiheeleminieren(int,int);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;nakedpairsspalte(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;nakedpairsspalteeleminieren(int,int);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;nakedpairsfeld(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;nakedpairsfeldeleminieren(int,int);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;nakedpairs(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;feldstartwerte(int,int,int&nbsp;&amp;xbeginn,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;ybeginn);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;blockedcandidates(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;blockedcandidatessucher(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;hauptberechner(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">void</font>&nbsp;bruteforcehaupt(<font color="#0000FF">void</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;bruteforce(int,int);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;loesungpruefen(<font color="#0000FF">void</font>);<br>
+};<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::grafikmodus(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;gdriver&nbsp;=&nbsp;DETECT,&nbsp;gmode,&nbsp;errorcode;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;initgraph(&amp;gdriver,&nbsp;&amp;gmode,&nbsp;<font color="#FF0000">&quot;C:\\progra~1\\TC\\BGI\\&quot;</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;errorcode&nbsp;=&nbsp;graphresult();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>&nbsp;(errorcode&nbsp;!=&nbsp;grOk)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt&lt&nbsp;<font color="#FF0000">&quot;Graphics&nbsp;error:&nbsp;%s\n&quot;</font>&lt&lt&nbsp;grapherrormsg(errorcode)&nbsp;&lt&lt&nbsp;endl;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt&lt&nbsp;<font color="#FF0000">&quot;Press&nbsp;any&nbsp;key&nbsp;to&nbsp;halt:&quot;</font>&nbsp;&lt&lt&nbsp;endl;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getch();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit(1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}<br>
+<br>
+sudoku::sudoku(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i=0,j=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feld[i][j]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(<font color="#0000FF">int</font>&nbsp;k=0;k&lt9;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;moeglichkeiten[i][j][k]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;moeglichkeiten1[i][j][k]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::grafik(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;setbkcolor(7);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;setcolor(BLUE);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;settextstyle(1,HORIZ_DIR,4);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;outtextxy(250,10,<font color="#FF0000">&quot;Sudoku&quot;</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;xstart=215,&nbsp;ystart=60,i;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setfillstyle(1,BLUE);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt200;i+=20)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bar(xstart+i,ystart,xstart+i+1,ystart+184);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bar(xstart+1,ystart+i,xstart+184,ystart+i+1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(i==60)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setfillstyle(1,YELLOW);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bar(xstart+i,ystart,xstart+i+1,ystart+184);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bar(xstart+1,ystart+i,xstart+184,ystart+i+1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setfillstyle(1,BLUE);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(i==122)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setfillstyle(1,YELLOW);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bar(xstart+i,ystart,xstart+i+1,ystart+184);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bar(xstart+1,ystart+i,xstart+184,ystart+i+1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setfillstyle(1,BLUE);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;settextstyle(1,HORIZ_DIR,1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;outtextxy(262,280,<font color="#FF0000">&quot;Berechnen&quot;</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rectangle(250,275,360,310);<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::grafikausgabe(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;xstart=222,ystart=67,sonst1=0,sonst2=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">char</font>&nbsp;wert[2];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;setcolor(8);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;settextstyle(0,HORIZ_DIR,1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(<font color="#0000FF">int</font>&nbsp;i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(i==3&nbsp;||&nbsp;i==6)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sonst1+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sonst2=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(<font color="#0000FF">int</font>&nbsp;j=0;j&lt9;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(j==3&nbsp;||&nbsp;j==6)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sonst2+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(feld[i][j]&gt0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sprintf(wert,<font color="#FF0000">&quot;%d&quot;</font>,feld[i][j]);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outtextxy(xstart+(i*20)+sonst1,ystart+(j*20)+sonst2,wert);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::eingabeauswahl(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;eingabebyte1=0,&nbsp;eingabebyte2=0,&nbsp;i=0,j=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;grafikmodus();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;grafik();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;eingabeauswahlgrafik(i,j,1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">while</font>(eingabebyte1!=13&nbsp;||&nbsp;j!=9)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(kbhit())<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eingabebyte1=getch();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(eingabebyte1==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eingabebyte2=getch();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(eingabebyte2==72&nbsp;&amp;&amp;&nbsp;j&gt0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j--;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">else</font>&nbsp;<font color="#0000FF">if</font>(eingabebyte2==80&nbsp;&amp;&amp;&nbsp;j&lt9)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">else</font>&nbsp;<font color="#0000FF">if</font>(eingabebyte2==75&nbsp;&amp;&amp;&nbsp;i&gt0&nbsp;&amp;&amp;&nbsp;j!=9)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i--;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">else</font>&nbsp;<font color="#0000FF">if</font>(eingabebyte2==77&nbsp;&amp;&amp;&nbsp;i&lt8&nbsp;&amp;&amp;&nbsp;j!=9)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eingabeauswahlgrafik(i,j,1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(eingabebyte1==13)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(j!=9)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eingabeauswahlgrafik(i,j,2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feld[i][j]=eingabe(i,j);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eingabeauswahlgrafik(i,j,2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">else</font>&nbsp;<font color="#0000FF">if</font>(j==9)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hauptberechner();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bruteforcehaupt();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eingabeauswahlgrafik(i,j,1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grafikausgabe();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::eingabeauswahlgrafik(<font color="#0000FF">int</font>&nbsp;i,int&nbsp;j,int&nbsp;modus)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;x,y,k,l,xstart=215,ystart=60,sonst1=0,sonst2=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">static</font>&nbsp;<font color="#0000FF">int</font>&nbsp;wert=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;x=i*20;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;y=j*20;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(i&gt2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(i&gt5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(j&gt2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(j&gt5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;x+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;y+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(modus==1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setcolor(7);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=0;k&lt9;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(k==3&nbsp;||&nbsp;k==6)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sonst1+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sonst2=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(l=0;l&lt9;l++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(l==3&nbsp;||&nbsp;l==6)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sonst2+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rectangle(xstart+(k*20)+2+sonst1,ystart+(l*20)+2+sonst2,xstart+(k*20)+19+sonst1,ystart+(l*20)+19+sonst2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setcolor(BLUE);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rectangle(250,275,360,310);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setcolor(RED);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(j!=9)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rectangle(x+xstart,y+ystart,x+xstart+17,y+ystart+17);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">else</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rectangle(250,275,360,310);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">else</font>&nbsp;<font color="#0000FF">if</font>(modus==2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(wert==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setfillstyle(1,WHITE);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wert=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">else</font>&nbsp;<font color="#0000FF">if</font>(wert==1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setfillstyle(1,7);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wert=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bar(x+xstart,y+ystart,x+xstart+17,y+ystart+17);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}<br>
+<br>
+<font color="#0000FF">int</font>&nbsp;sudoku::eingabe(<font color="#0000FF">int</font>&nbsp;a,&nbsp;<font color="#0000FF">int</font>&nbsp;j)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i=0,&nbsp;wert=0,erg=0,xposition=0,yposition=0,xstart=215,ystart=60;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">char</font>&nbsp;zwi[2];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;zwi[0]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;zwi[1]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;xposition=a*20;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;yposition=j*20;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(a&gt2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xposition+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(a&gt5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xposition+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(j&gt2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yposition+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(j&gt5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yposition+=2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;xposition+=7;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;yposition+=7;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;settextstyle(0,&nbsp;HORIZ_DIR,&nbsp;1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;setcolor(8);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">do</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(kbhit())<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wert=getch();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(wert==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getch();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">else</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(wert==8&nbsp;&amp;&amp;&nbsp;i&gt0)<font color="#008000">//Falls&nbsp;Backspace&nbsp;gedrÅckt&nbsp;wird&nbsp;letztes&nbsp;Zeichen&nbsp;lîschen<br>
+</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sprintf(zwi,<font color="#FF0000">&quot;%c&quot;</font>,&nbsp;erg+48);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setcolor(WHITE);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outtextxy(xposition-8+xstart,&nbsp;yposition+ystart,&nbsp;zwi);&nbsp;<font color="#008000">//Das&nbsp;letzte&nbsp;Zeichen&nbsp;mit&nbsp;der&nbsp;Hintergrundfarbe&nbsp;Åberschreiben<br>
+</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setcolor(8);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;erg=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xposition-=8;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i--;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(wert!=8&nbsp;&amp;&amp;&nbsp;wert!=13&nbsp;&amp;&amp;&nbsp;i&lt1&nbsp;&amp;&amp;&nbsp;wert&gt48&nbsp;&amp;&amp;&nbsp;wert&lt58)<font color="#008000">//Neues&nbsp;Zeichen&nbsp;in&nbsp;den&nbsp;String&nbsp;einlesen<br>
+</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;erg=wert-48;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sprintf(zwi,<font color="#FF0000">&quot;%c&quot;</font>,&nbsp;erg+48);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setcolor(8);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outtextxy(xposition+xstart,&nbsp;yposition+ystart,&nbsp;zwi);&nbsp;<font color="#008000">//Das&nbsp;neue&nbsp;Zeichen&nbsp;auf&nbsp;dem&nbsp;Bildschirm&nbsp;ausgeben<br>
+</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xposition+=8;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">while</font>(wert!=13);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">return</font>&nbsp;erg;<br>
+}<br>
+<br>
+<font color="#0000FF">int</font>&nbsp;sudoku::spaltensucher(<font color="#0000FF">int</font>&nbsp;spalte,int&nbsp;ziffer)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i=0,&nbsp;ret=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9&nbsp;&amp;&amp;&nbsp;ret==0;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(feld[spalte][i]==ziffer)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">return</font>&nbsp;ret;<br>
+}<br>
+<br>
+<font color="#0000FF">int</font>&nbsp;sudoku::reihensucher(<font color="#0000FF">int</font>&nbsp;reihe,int&nbsp;ziffer)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i=0,&nbsp;ret=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9&nbsp;&amp;&amp;&nbsp;ret==0;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(feld[i][reihe]==ziffer)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">return</font>&nbsp;ret;<br>
+}<br>
+<br>
+<font color="#0000FF">int</font>&nbsp;sudoku::dreixdreisucher(<font color="#0000FF">int</font>&nbsp;reihe,&nbsp;<font color="#0000FF">int</font>&nbsp;spalte,&nbsp;<font color="#0000FF">int</font>&nbsp;ziffer)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;ret=0,&nbsp;xbeginn=0,&nbsp;ybeginn=0,i=0,j=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;feldstartwerte(spalte,reihe,xbeginn,ybeginn);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=ybeginn;i&ltybeginn+3&nbsp;&amp;&amp;&nbsp;ret==0;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=xbeginn;j&ltxbeginn+3&nbsp;&amp;&amp;&nbsp;ret==0;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(feld[j][i]==ziffer)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">return</font>&nbsp;ret;<br>
+}<br>
+<br>
+<font color="#0000FF">int</font>&nbsp;sudoku::sucher(<font color="#0000FF">int</font>&nbsp;reihe,int&nbsp;spalte,&nbsp;<font color="#0000FF">int</font>&nbsp;ziffer)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;ret=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(spaltensucher(spalte,ziffer))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(reihensucher(reihe,ziffer))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(dreixdreisucher(reihe,spalte,ziffer))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">return</font>&nbsp;ret;<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::moeglichkeitennullsetzer(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i,j,k;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=0;k&lt9;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;moeglichkeiten[i][j][k]=0;<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::gesamtmoeglichkeiten(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i=0,j=0,k=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;moeglichkeitennullsetzer();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=1;k&lt10;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(feld[j][i]==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(sucher(i,j,k)==0&nbsp;&amp;&amp;&nbsp;moeglichkeiten1[j][i][k-1]!=-1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;moeglichkeiten[j][i][k-1]=k;<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::single(<font color="#0000FF">int</font>&nbsp;&amp;reihe,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;spalte,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;ziffer)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i=0,j=0,k=0,anzahl=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;reihe=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;spalte=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ziffer=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9&nbsp;&amp;&amp;&nbsp;anzahl!=1;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9&nbsp;&amp;&amp;&nbsp;anzahl!=1;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=0,&nbsp;anzahl=0;k&lt9;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(feld[j][i]==0&nbsp;&amp;&amp;&nbsp;moeglichkeiten[j][i][k]&gt0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;anzahl++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reihe=i;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spalte=j;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffer=moeglichkeiten[j][i][k];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(anzahl&gt1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reihe=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spalte=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffer=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(anzahl&gt1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reihe=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spalte=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffer=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::hiddensinglespalte(<font color="#0000FF">int</font>&nbsp;&amp;reihe,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;spalte,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;ziffer)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i,j,k,anzahl;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9&nbsp;&amp;&amp;&nbsp;anzahl!=1;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9&nbsp;&amp;&amp;&nbsp;anzahl!=1;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=0,anzahl=0;k&lt9;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeiten[i][k][j]&gt0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;anzahl++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reihe=k;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spalte=i;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffer=moeglichkeiten[i][k][j];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(anzahl&gt1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reihe=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spalte=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffer=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::hiddensinglereihe(<font color="#0000FF">int</font>&nbsp;&amp;reihe,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;spalte,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;ziffer)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i,j,k,anzahl;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9&nbsp;&amp;&amp;&nbsp;anzahl!=1;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9&nbsp;&amp;&amp;&nbsp;anzahl!=1;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=0,&nbsp;anzahl=0;k&lt9;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeiten[k][i][j]&gt0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;anzahl++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reihe=i;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spalte=k;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffer=moeglichkeiten[k][i][j];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(anzahl&gt1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reihe=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spalte=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffer=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::hiddensinglefeld(<font color="#0000FF">int</font>&nbsp;&amp;reihe,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;spalte,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;ziffer)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i,j,k,l,anzahl,zahl;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9&nbsp;&amp;&amp;&nbsp;anzahl!=1;i+=3)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9&nbsp;&amp;&amp;&nbsp;anzahl!=1;j+=3)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(zahl=0;zahl&lt9&nbsp;&amp;&amp;&nbsp;anzahl!=1;zahl++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=i,&nbsp;anzahl=0;k&lti+3;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(l=j;l&ltj+3;l++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeiten[l][k][zahl]&gt0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;anzahl++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reihe=k;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spalte=l;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffer=moeglichkeiten[l][k][zahl];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(anzahl&gt1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reihe=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spalte=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffer=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::hiddensingle(<font color="#0000FF">int</font>&nbsp;&amp;reihe,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;spalte,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;ziffer)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;x,y,zahl;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hiddensinglespalte(y,&nbsp;x,&nbsp;zahl);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(y!=-1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reihe=y;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spalte=x;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffer=zahl;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hiddensinglereihe(y,&nbsp;x,&nbsp;zahl);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(y!=-1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reihe=y;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spalte=x;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffer=zahl;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hiddensinglefeld(y,&nbsp;x,&nbsp;zahl);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(y!=-1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reihe=y;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spalte=x;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffer=zahl;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}<br>
+<br>
+<font color="#0000FF">int</font>&nbsp;sudoku::moeglichkeitenanzahl(<font color="#0000FF">int</font>&nbsp;x,int&nbsp;y)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i=0,&nbsp;anzahl=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeiten[x][y][i]&gt0&nbsp;&amp;&amp;&nbsp;feld[x][y]==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;anzahl++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">return</font>&nbsp;anzahl;<br>
+}<br>
+<br>
+<font color="#0000FF">int</font>&nbsp;sudoku::moeglichkeitenvergleich(<font color="#0000FF">int</font>&nbsp;x1,int&nbsp;y1,int&nbsp;x2,int&nbsp;y2)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i=0,ret=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeiten[x1][y1][i]!=moeglichkeiten[x2][y2][i])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">return</font>&nbsp;ret;<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::nakedpairsreihe(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i,j,k;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeitenanzahl(i,j)==2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=i+1;k&lt9;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeitenvergleich(i,j,k,j)==1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nakedpairsreiheeleminieren(i,j);<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::nakedpairsspalte(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i,j,k;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeitenanzahl(i,j)==2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=j+1;k&lt9;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeitenvergleich(i,j,i,k)==1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nakedpairsspalteeleminieren(i,j);<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::nakedpairsfeld(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i=0,j=0,k=0,l=0,xbeginn=0,ybeginn=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeitenanzahl(i,j)==2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feldstartwerte(i,j,xbeginn,ybeginn);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>((i+1)%3==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l=j+1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;k=xbeginn;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">else</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;k=i+1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l=j;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(l&lt9)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(l;l&ltybeginn+3;l++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k;k&ltxbeginn+3;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeitenvergleich(i,j,k,l)==1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nakedpairsfeldeleminieren(i,j);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::nakedpairsreiheeleminieren(<font color="#0000FF">int</font>&nbsp;x,int&nbsp;y)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i=0,j=0,k=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeitenvergleich(x,y,i,y)==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=0;k&lt9;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeiten[i][y][k]==moeglichkeiten[x][y][j])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;moeglichkeiten[i][y][k]=0;<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::nakedpairsspalteeleminieren(<font color="#0000FF">int</font>&nbsp;x,int&nbsp;y)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i=0,j=0,k=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeitenvergleich(x,y,x,i)==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=0;k&lt9;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeiten[x][i][k]==moeglichkeiten[x][y][j])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;moeglichkeiten[x][i][k]=0;<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::nakedpairsfeldeleminieren(<font color="#0000FF">int</font>&nbsp;x,&nbsp;<font color="#0000FF">int</font>&nbsp;y)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i=0,j=0,k=0,l=0,xbeginn=0,ybeginn=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;feldstartwerte(x,y,xbeginn,ybeginn);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=ybeginn;j&ltybeginn+3;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=xbeginn;i&ltxbeginn+3;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeitenvergleich(x,y,i,j)==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=0;k&lt9;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(l=0;l&lt9;l++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeiten[x][y][k]==moeglichkeiten[i][j][l])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;moeglichkeiten[i][j][l]=0;<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::nakedpairs(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nakedpairsreihe();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nakedpairsspalte();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nakedpairsfeld();<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::feldstartwerte(<font color="#0000FF">int</font>&nbsp;spalte,&nbsp;<font color="#0000FF">int</font>&nbsp;reihe,int&nbsp;&amp;xbeginn,&nbsp;<font color="#0000FF">int</font>&nbsp;&amp;ybeginn)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(spalte&gt=0&nbsp;&amp;&amp;&nbsp;spalte&lt=2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xbeginn=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(reihe&gt=0&nbsp;&amp;&amp;&nbsp;reihe&lt=2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ybeginn=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(reihe&gt=3&nbsp;&amp;&amp;&nbsp;reihe&lt=5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ybeginn=3;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(reihe&gt=6&nbsp;&amp;&amp;&nbsp;reihe&lt=8)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ybeginn=6;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(spalte&gt=3&nbsp;&amp;&amp;&nbsp;spalte&lt=5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xbeginn=3;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(reihe&gt=0&nbsp;&amp;&amp;&nbsp;reihe&lt=2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ybeginn=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(reihe&gt=3&nbsp;&amp;&amp;&nbsp;reihe&lt=5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ybeginn=3;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(reihe&gt=6&nbsp;&amp;&amp;&nbsp;reihe&lt=8)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ybeginn=6;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(spalte&gt=6&nbsp;&amp;&amp;&nbsp;spalte&lt=8)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xbeginn=6;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(reihe&gt=0&nbsp;&amp;&amp;&nbsp;reihe&lt=2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ybeginn=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(reihe&gt=3&nbsp;&amp;&amp;&nbsp;reihe&lt=5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ybeginn=3;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(reihe&gt=6&nbsp;&amp;&amp;&nbsp;reihe&lt=8)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ybeginn=6;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::blockedcandidates(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i,j,k;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(feld[i][j]==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=0;k&lt9;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeiten[i][j][k]&gt0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feld[i][j]=moeglichkeiten[i][j][k];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(blockedcandidatessucher()==1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feld[i][j]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;moeglichkeiten1[i][j][k]=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gesamtmoeglichkeiten();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feld[i][j]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gesamtmoeglichkeiten();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;gesamtmoeglichkeiten();<br>
+}<br>
+<br>
+<font color="#0000FF">int</font>&nbsp;sudoku::blockedcandidatessucher(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i,j,k,l,m,n,ret=0,ziffern[9];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;gesamtmoeglichkeiten();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nakedpairs();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9;j+=3)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i+=3)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(n=0;n&lt9;n++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffern[n]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(m=1;m&lt10;m++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(l=j;l&ltj+3;l++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=i;k&lti+3;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(feld[k][l]==m&nbsp;||&nbsp;moeglichkeiten[k][l][m-1])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffern[n]=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(n=0;n&lt9;n++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(ziffern[n]==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">return</font>&nbsp;ret;<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::hauptberechner(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i=0,x=0,y=0,z=0,gemacht=0,anzahl=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;setcolor(BLUE);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;settextstyle(0,HORIZ_DIR,1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;outtextxy(20,250,<font color="#FF0000">&quot;Analyse&quot;</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt75&nbsp;&amp;&amp;&nbsp;anzahl&lt2;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gesamtmoeglichkeiten();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nakedpairs();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;single(y,&nbsp;x,&nbsp;z);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gemacht=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(y&gt-1&nbsp;&amp;&amp;&nbsp;x&gt-1&nbsp;&amp;&amp;&nbsp;z&gt-1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feld[x][y]=z;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grafikausgabe();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gemacht=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;anzahl=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gesamtmoeglichkeiten();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nakedpairs();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hiddensingle(y,&nbsp;x,&nbsp;z);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(y&gt-1&nbsp;&amp;&amp;&nbsp;x&gt-1&nbsp;&amp;&amp;&nbsp;z&gt-1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feld[x][y]=z;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grafikausgabe();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gemacht=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;anzahl=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(gemacht==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;blockedcandidates();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;anzahl++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}<br>
+<br>
+<font color="#0000FF">void</font>&nbsp;sudoku::bruteforcehaupt(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;gesamtmoeglichkeiten();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bruteforce(0,0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">while</font>(getch()!=13);<br>
+}<br>
+<br>
+<font color="#0000FF">int</font>&nbsp;sudoku::bruteforce(<font color="#0000FF">int</font>&nbsp;inti,int&nbsp;intj)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i,j,k,ret=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;setcolor(BLUE);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;settextstyle(0,HORIZ_DIR,1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;outtextxy(20,260,<font color="#FF0000">&quot;Brute&nbsp;Force&quot;</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;i=inti;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;j=intj;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=0;k&lt9&nbsp;&amp;&amp;&nbsp;ret==0;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(moeglichkeiten[i][j][k]&gt0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feld[i][j]=moeglichkeiten[i][j][k];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gesamtmoeglichkeiten();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(i&lt8)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=bruteforce(i+1,j);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(i==8)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=bruteforce(0,j+1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feld[i][j]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gesamtmoeglichkeiten();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(feld[i][j]&gt0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(i&lt8)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=bruteforce(i+1,j);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(i==8)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=bruteforce(0,j+1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(feld[8][8]&gt0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(loesungpruefen()==1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grafikausgabe();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">return</font>&nbsp;ret;<br>
+}<br>
+<br>
+<font color="#0000FF">int</font>&nbsp;sudoku::loesungpruefen(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">int</font>&nbsp;i,j,k,l,m,n,ziffern[9],ret=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(n=0;n&lt9;n++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffern[n]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=1;k&lt10;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(feld[i][j]==k)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffern[k-1]=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(n=0;n&lt9;n++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(ziffern[n]==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(n=0;n&lt9;n++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffern[n]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=1;k&lt10;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9;j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(feld[j][i]==k)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffern[k-1]=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(n=0;n&lt9;n++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(ziffern[n]==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(i=0;i&lt9;i+=3)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(j=0;j&lt9;j+=3)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(n=0;n&lt9;n++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffern[n]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(m=1;m&lt10;m++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(k=i;k&lti+3;k++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(l=j;l&ltj+3;l++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(feld[k][l]==m)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ziffern[m-1]=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">for</font>(n=0;n&lt9;n++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">if</font>(ziffern[n]==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">return</font>&nbsp;ret;<br>
+}<br>
+<br>
+<font color="#0000FF">int</font>&nbsp;main(<font color="#0000FF">void</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sudoku&nbsp;eins;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;eins.eingabeauswahl();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">return</font>&nbsp;0;<br>
+}
+</font>
+</body>

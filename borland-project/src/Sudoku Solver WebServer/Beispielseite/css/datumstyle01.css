@@ -1,0 +1,25 @@
+
+/* uhr - datum */
+
+input.datum {
+font-size:9pt;
+
+color:#000;
+border:solid 0px;
+text-align:center;
+padding-top:2px;
+background:transparent;
+
+}
+
+input.zeit{
+font-size:9pt;
+
+color:#000;
+border:solid 0px;
+text-align:center;
+padding-top:2px;
+background:transparent;
+}
+form {margin-bottom:0px;
+}

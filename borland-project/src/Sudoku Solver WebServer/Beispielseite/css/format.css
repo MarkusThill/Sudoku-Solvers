@@ -1,0 +1,132 @@
+
+/* schriftstil,abstände */
+
+body
+{ color: white;  background-color: #fff; font-family: verdana,arial; font-size: 10pt;margin-top: 20px; margin-left: 40px; margin-right: 40px;margin-bottom: 20px; padding:0px;}
+
+
+table,tr,td
+{margin-top: 0px; margin-left: 0px; margin-right:0px;margin-bottom:0px; color: #000 ;font-family: verdana,arial; font-size: 10pt; }
+
+
+.rub
+{ color: #000;  background-color: #eeeeee; font-family: verdana,arial; font-size: 9pt;}
+
+/* menue links */
+
+#menu1 a {display: block;
+background-color:#ffffff; color:#808080;
+text-decoration:none;font-family:verdana, sans-serif; font-size: 9pt;width:210px;
+padding-left: 4px; padding-bottom: 4px;   padding-top: 4px;margin: 0px auto;border-top:solid 1px #bcbcbc;
+}
+
+#menu1 a:visited{
+background-color:#ffffff; color:#808080;
+text-decoration:none;font-family:verdana, sans-serif; font-size: 9pt;width:210px;
+padding-left: 4px; padding-bottom: 4px;   padding-top: 4px;margin: 0px auto;border-top:solid 1px #bcbcbc;
+  }
+
+#menu1 a:active{
+background-color:#ffffff; color:#808080;
+text-decoration:none;font-family:verdana, sans-serif; font-size: 9pt;width:210px;
+padding-left: 4px; padding-bottom: 4px;   padding-top: 4px;margin: 0px auto;border-top:solid 1px #bcbcbc;
+  }
+
+#menu1 a:hover {
+background-color:#eeeeee; color:#000000;
+text-decoration:none;font-family:verdana, sans-serif; font-size: 9pt;width:210px;
+padding-left: 4px; padding-bottom: 4px;   padding-top: 4px;margin: 0px auto;border-top:solid 1px #bcbcbc;
+
+}
+
+
+/* horizontale Button-Leiste*/
+
+
+#menu a {display: block;
+color:#5F5F5F;text-decoration:none;font-family:verdana, sans-serif; font-size:10pt; width:125px;
+padding-left: 2px; padding-bottom: 3px; padding-top: 3px;margin: 0px auto;
+border-bottom:solid 1px #d4d4d4;
+border-top:solid 1px #FBFBFB;
+border-right:solid 1px #FBFBFB;
+}
+
+#menu a:visited{
+color:#5F5F5F;text-decoration:none;font-family:verdana, sans-serif; font-size:10pt; width:125px;
+padding-left: 2px; padding-bottom: 3px; padding-top: 3px;margin: 0px auto;
+border-bottom:solid 1px #d4d4d4;
+border-top:solid 1px #FBFBFB;
+border-right:solid 1px #FBFBFB;
+}
+
+#menu a:active {color:#5F5F5F;text-decoration:none;font-family:verdana, sans-serif; font-size:10pt; width:125px;
+padding-left: 2px; padding-bottom: 3px; padding-top: 3px;margin: 0px auto;
+border-bottom:solid 1px #d4d4d4;
+border-top:solid 1px #FBFBFB;
+border-right:solid 1px #FBFBFB;
+}
+
+#menu a:hover {
+color:#ffffff;text-decoration:none;font-family:verdana, sans-serif; font-size:10pt; width:125px;
+padding-left: 2px; padding-bottom: 3px; padding-top: 4px;margin: 0px auto;
+border-bottom:solid 1px #5F5F5F;
+border-top:solid 1px #cccccc;
+border-right:solid 1px #cccccc;
+background-image:url(images/nav_back2.jpg);
+}
+
+/* allgemeine links */
+
+#links1 a:link{ color: #808080; text-decoration:underline; ;font-family: verdana; font-size: 10pt;}
+
+#links1 a:visited{color: #808080;text-decoration:underline;font-family: verdana; font-size: 10pt; }
+
+#links1 a:active{ color:#808080;text-decoration:underline;font-family: verdana; font-size: 10pt;  }
+
+#links1 a:hover{ color: #ffffff;background-color:#808080;  text-decoration:none;font-family: verdana; font-size: 10pt; }
+
+
+
+/*CSS-Definitionen für die Sudoku-Seite*/
+
+.body {
+	PADDING-LEFT: 4px; BACKGROUND: #ffffff
+}
+
+.sudoku_black {
+	BORDER-RIGHT: medium none; BORDER-TOP: medium none; FONT-WEIGHT: bold; FONT-SIZE: 26px; BORDER-LEFT: medium none; WIDTH: 30px; COLOR: black; BORDER-BOTTOM: medium none; FONT-FAMILY: verdana, geneva, arial, helvetica, sans-serif; HEIGHT: 30px; TEXT-ALIGN: center
+}
+
+.border_left_bottom {
+	BORDER-LEFT: #000000 1px solid; BORDER-BOTTOM: #000000 1px solid
+}
+.border_right_bottom {
+	BORDER-RIGHT: #000000 1px solid; BORDER-BOTTOM: #000000 1px solid
+}
+.border_bottom {
+	BORDER-BOTTOM: #000000 1px solid
+}
+.border_right {
+	BORDER-RIGHT: #99a2ad 1px solid
+}
+.border_right_strong {
+	BORDER-RIGHT: #99a2ad 3px solid
+}
+.border_top_right {
+	BORDER-RIGHT: #99a2ad 1px solid; BORDER-TOP: #99a2ad 1px solid
+}
+.border_top_right_strong {
+	BORDER-RIGHT: #99a2ad 3px solid; BORDER-TOP: #99a2ad 1px solid
+}
+.border_top {
+	BORDER-TOP: #99a2ad 1px solid
+}
+.border_top_strong {
+	BORDER-TOP: #99a2ad 3px solid
+}
+.border_top_strong_right {
+	BORDER-RIGHT: #99a2ad 1px solid; BORDER-TOP: #99a2ad 3px solid
+}
+.border_top_strong_right_strong {
+	BORDER-RIGHT: #99a2ad 3px solid; BORDER-TOP: #99a2ad 3px solid
+}
